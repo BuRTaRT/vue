@@ -335,6 +335,7 @@ td {
     padding: 5px 10px;
     border: 1px solid lightgray;
     height: 35px;
+    margin: 0px 5px;
 }
 
 .Undo {
