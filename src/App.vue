@@ -67,7 +67,7 @@
         </div>
         <p>Post Trucks</p>
         <div class="btn-container">
-            <i class="fas fa-play-circle" @click="timeout" disabled="disabled"></i>
+            <i class="fas fa-play-circle" @click="timeout"></i>
             <div class="v-line">
 
             </div>
