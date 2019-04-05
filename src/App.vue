@@ -67,7 +67,7 @@
         </div>
         <p>Post Trucks</p>
         <div class="btn-container">
-            <i class="fas fa-play-circle" @click="timeout"></i>
+            <i class="fas fa-play-circle" @click="timeout" disabled="disabled"></i>
             <div class="v-line">
 
             </div>
@@ -75,7 +75,7 @@
                 <i class="fas fa-plus"></i>
                 <span>New</span>
             </div>
-            <div class="icon-container delete" @click="deleteAll(table1)">
+            <div class="icon-container delete" @click="deleteAll(table1,null)">
                 <i class="fas fa-times"></i>
                 <span>Delete All</span>
             </div>
@@ -121,7 +121,7 @@
                     <span>Undo</span>
                 </div>
                 <div class="icon-container">
-                    <i class="far fa-times-circle" @click="deleteAll(table2)"></i>
+                    <i class="far fa-times-circle" @click="deleteAll(table2,timer)"></i>
                     <span>Clear</span>
                 </div>
             </div>
@@ -286,10 +286,13 @@ export default {
             this.table2.push(obj);
         },
         timeout() {
-             this.timer = setInterval(() => {
-                this.randomFieldsPush();
-            }
-            ,Math.floor(Math.random() * (2000 - 1000 + 1) + 1000))
+            let that = this;
+            clearTimeout(this.timer);
+            this.timer = setTimeout(function func() {
+                that.randomFieldsPush();
+                let n = Math.floor(Math.random() * (2000 - 1000 + 1) + 1000);
+                that.timer =setTimeout(func, n);
+            }, 1000)
         },
         modalConfirm() {
             this.table1.push(this.temp);
@@ -311,10 +314,9 @@ export default {
                 "Actions": ""
             }
         },
-        deleteAll(table) {
+        deleteAll(table, timer) {
             table.splice(0, table.length);
-            clearInterval(this.timer);
-            
+            if (timer) {clearTimeout(this.timer);}
         },
     },
     computed: {
@@ -328,7 +330,7 @@ export default {
 </script>
 
 <style>
-html{
+html {
     background-color: #C5DBEC;
 }
 
@@ -475,10 +477,12 @@ td {
 .inp-container {
     margin: 0 5px;
 }
-@media (max-width: 700px){
-    .modal-window{
-       width: 90%;
-       left: 360px;
+
+@media (max-width: 700px) {
+    .modal-window {
+        width: 90%;
+        left: 360px;
     }
 }
+
 </style>
