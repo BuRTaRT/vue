@@ -67,7 +67,7 @@
         </div>
         <p>Post Trucks</p>
         <div class="btn-container">
-            <i class="fas fa-play-circle" @click="randomElems(1000)"></i>
+            <i class="fas fa-play-circle" @click="timeout"></i>
             <div class="v-line">
 
             </div>
@@ -85,28 +85,34 @@
             </div>
 
         </div>
-        <table class="table1" border="bordered">
-            <tr>
-                <th>Call controll</th>
-                <th>Read</th>
-                <th>Sound/Autocol</th>
-                <th>Truck</th>
-                <th>Origin</th>
-                <th>Destination</th>
-                <th>Pickup</th>
-                <th>DH-O</th>
-                <th>DH-D</th>
-                <th>F/P</th>
-                <th>Length</th>
-                <th>Weight</th>
-                <th>Trip</th>
-                <th>Alarm</th>
-                <th>Actions</th>
-            </tr>
-            <tr v-for="item in table1">
-                <td v-for="i in item">{{ i }}</td>
-            </tr>
-        </table>
+        <div class="table-responsive">
+            <table class="table1" border="bordered">
+                <thead>
+                    <tr>
+                        <th>Call controll</th>
+                        <th>Read</th>
+                        <th>Sound/Autocol</th>
+                        <th>Truck</th>
+                        <th>Origin</th>
+                        <th>Destination</th>
+                        <th>Pickup</th>
+                        <th>DH-O</th>
+                        <th>DH-D</th>
+                        <th>F/P</th>
+                        <th>Length</th>
+                        <th>Weight</th>
+                        <th>Trip</th>
+                        <th>Alarm</th>
+                        <th class="" @click="randomFieldsPush">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in table1">
+                        <td v-for="i in item">{{ i }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <div class="results">
             <div class="results-result">Search Results: {{ count }}</div>
             <div class="btn-container">
@@ -120,9 +126,9 @@
                 </div>
             </div>
         </div>
-        <div class="wrap">
+        <div class="table-responsive">
             <table class="table2">
-                <tr>
+                <tr class="tr2">
                     <th>Rate</th>
                     <th>F</th>
                     <th>Source</th>
@@ -133,6 +139,7 @@
                     <th>DH-O</th>
                     <th>F/P</th>
                     <th>Origin</th>
+                    <th>Destination</th>
                     <th>Trip</th>
                     <th>DH-D</th>
                     <th>Truck-D</th>
@@ -153,6 +160,7 @@
 export default {
     data() {
         return {
+            timer: "",
             visible: false,
             temp: {
                 "Call controll": "",
@@ -177,12 +185,13 @@ export default {
                     "F": "Yes",
                     "Source": "Dat",
                     "Age": "00:01",
-                    "Avail": "",
+                    "Avail": "11/24",
                     "Truck": "",
                     "Truck-O": "",
                     "DH-O": "",
                     "F/P": "",
                     "Origin": "",
+                    "Destination": "Orlando, FL",
                     "Trip": "",
                     "DH-D": "",
                     "Truck-D": "",
@@ -196,24 +205,94 @@ export default {
                     "F": "No",
                     "Source": "Dat",
                     "Age": "00:02",
-                    "Avail": "",
-                    "Truck": "",
-                    "Truck-O": "",
-                    "DH-O": "",
-                    "F/P": "",
-                    "Origin": "",
-                    "Trip": "",
+                    "Avail": "11/24",
+                    "Truck": "V",
+                    "Truck-O": "Bellwood, IL",
+                    "DH-O": "371",
+                    "F/P": "F",
+                    "Origin": "ERIE, PA",
+                    "Destination": "Orlando, FL",
+                    "Trip": "422",
                     "DH-D": "",
                     "Truck-D": "",
-                    "Length": "",
-                    "Weight": "",
-                    "Company": "",
-                    "Phone": "",
+                    "Length": "41 ft",
+                    "Weight": "17 klbs",
+                    "Company": "R&R Express",
+                    "Phone": "(412)444 32 45",
                 }
             ]
         }
     },
     methods: {
+        randomFieldsPush() {
+            function randomFromArray(arr) {
+                let i = Math.floor(Math.random() * arr.length);
+                return arr[i];
+            };
+            let randomRate = (function() {
+                return Math.floor(Math.random() * 5000 + 100);
+            })();
+            let randomF = randomFromArray(["Yes", 'No']);
+            let randomSource = (function() {
+                return "Dat";
+            })();
+            let randomAge = (function() {
+                return `00:0${Math.floor(Math.random() * 9)}`
+            })();
+            let randomAvail = (function() {
+                return `${Math.floor(Math.random()*20)}/${Math.floor(Math.random()*20)}`
+            })();
+            let randomTruck = randomFromArray(["V", "VR"]);
+            let randomTruckO = randomFromArray(["Mendenhall", "Meridian", "Mexico Beach", "Los Angeles, CA", "Chicago, IL", "Houston, TX", "Phoenix, AZ", "Philadelphia, PA", "San Diego, CA", "Detroit, MI", "Massachusetts"]);
+            let randomDHO = (function() {
+                return Math.floor(Math.random() * 300 + 1)
+            })();
+            let randomFP = randomFromArray(["F", "P"]);
+            let randomOrigin = randomFromArray(["Orlando, FL", "Stockton, CA", "Henderson, NV", "Buffalo, NY", "Durham, NC"]);
+            let randomTrip = (function() {
+                return Math.floor(Math.random() * 500 + 1)
+            })();
+            let randomDestination = randomFromArray(["Chicago, IL", "Dallas, TX", "San Francisco, CA", "Seattle, WA", "Denver, CO", "Boston, MA"]);
+            let randomLength = (function() {
+                return Math.floor(Math.random() * 25 + 1) + " ft"
+            })();
+            let randomWeight = (function() {
+                return Math.floor(Math.random() * 50 + 1) + " klbs"
+            })();
+            let randomCompany = randomFromArray(["Wal-Mart Stores", "General Motors", "ConocoPhillips", "Home Depot", "Hewlett-Packard", " Dell", "Samsung", "Sony", "Microsoft", "Asus", "Logitech"]);
+            let randomPhone = (function() {
+                return `${Math.floor(Math.random()* 900+100)} ${Math.floor(Math.random()* 900+100)} ${Math.floor(Math.random()* 900+100)} `
+            })();
+            let obj = {
+                "Rate": randomRate,
+                "F": randomF,
+                "Source": randomSource,
+                "Age": randomAge,
+                "Avail": randomAvail,
+                "Truck": randomTruck,
+                "Truck-O": randomTruckO,
+                "DH-O": randomDHO,
+                "F/P": randomFP,
+                "Origin": randomOrigin,
+                "Destination": randomDestination,
+                "Trip": randomTrip,
+                "DH-D": "",
+                "Truck-D": "",
+                "Length": randomLength,
+                "Weight": randomWeight,
+                "Company": randomCompany,
+                "Phone": randomPhone,
+            }
+            this.table2.push(obj);
+        },
+        timeout() {
+            let amount;
+            let timer = setInterval(() => {
+                this.randomFieldsPush();
+                 
+            }
+            ,Math.floor(Math.random() * (2000 - 1000 + 1) + 1000))
+        },
         modalConfirm() {
             this.table1.push(this.temp);
             console.log(this.table1);
@@ -238,11 +317,10 @@ export default {
         deleteAll(table) {
             table.splice(0, table.length);
         },
-       
     },
     computed: {
-        count(){
-         return this.table2.length;
+        count() {
+            return this.table2.length;
         }
     },
     components: {}
@@ -250,7 +328,11 @@ export default {
 
 </script>
 
-<style scoped>
+<style>
+html{
+    background-color: #C5DBEC;
+}
+
 i {
     font-style: normal;
 }
@@ -266,7 +348,6 @@ i {
 
 .wrapper {
     background-color: #C5DBEC;
-    min-height: 100vh;
 }
 
 .wrapper {
@@ -318,23 +399,25 @@ table {
 
 .table2 {
     margin-top: 5px;
+
 }
 
 th {
-    padding: 5px 10px;
+    padding: 5px 0px;
     background-color: #454345;
     color: white;
     font-weight: 400;
     border: 1px solid white;
-    flex-grow: 1;
+    text-align: center;
 }
 
 td {
     background-color: white;
     color: black;
-    padding: 5px 10px;
+    padding: 5px 0;
     border: 1px solid lightgray;
-    height: 35px;
+    text-align: center;
+
 }
 
 .Undo {
@@ -358,6 +441,7 @@ td {
 }
 
 .modal-window {
+    z-index: 1000;
     padding: 5px 0px 15px 0px;
     display: flex;
     flex-wrap: wrap;
@@ -388,8 +472,14 @@ td {
 .modal-btn {
     margin-top: 10px;
 }
-.inp-container{
+
+.inp-container {
     margin: 0 5px;
 }
-
+@media (max-width: 700px){
+    .modal-window{
+       width: 90%;
+       left: 360px;
+    }
+}
 </style>
