@@ -286,16 +286,13 @@ export default {
             this.table2.push(obj);
         },
         timeout() {
-            let amount;
-            let timer = setInterval(() => {
+             this.timer = setInterval(() => {
                 this.randomFieldsPush();
-                 
             }
             ,Math.floor(Math.random() * (2000 - 1000 + 1) + 1000))
         },
         modalConfirm() {
             this.table1.push(this.temp);
-            console.log(this.table1);
             this.temp = {
                 "Call controll": "",
                 "Read": "",
@@ -316,6 +313,8 @@ export default {
         },
         deleteAll(table) {
             table.splice(0, table.length);
+            clearInterval(this.timer);
+            
         },
     },
     computed: {
